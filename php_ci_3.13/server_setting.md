@@ -12,8 +12,9 @@
 >> 4. 사용하고싶은 해당 디렉토리 내부에 conf 파일 생성후 그 아래 3개의 conf(메모장)을 만들어준다
 (1) httpd-app-conf  
 (2) httpd-prefix.conf
-(3) httpd-vhosts.conf 
->>> (1) app-conf
+(3) httpd-vhosts.conf
+
+>>> 1. app-conf
 경로 : D:\hearald_project\spanishmaster_lms2022\conf
 예시 : <Directory "D:\hearald_project\spanishmaster_lms2022">
 	Options +MultiViews
@@ -21,10 +22,10 @@
 	Order allow,deny
 	allow from all
          </Directory>
->>> (2) prefix.conf 
+>>> 2. prefix.conf 
 경로 : D:\hearald_project\spanishmaster_lms2022\conf
 예시 : Include "D:/hearald_project/spanishmaster_lms2022/conf/httpd-app.conf"
->>> (3) vhosts.conf
+>>> 3. vhosts.conf
 경로 : D:\hearald_project\spanishmaster_lms2022\conf
 예시 : <VirtualHost *:8082>
   	ServerName spanishmaster_lms2022.example.com
