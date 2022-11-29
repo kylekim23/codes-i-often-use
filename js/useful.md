@@ -244,4 +244,30 @@ window.onload = () =>{
   }
 }
 ```
-### 테스트
+### Timer 타이머
+```javascript
+/**
+ * ! timer
+ */
+hashcode : '',
+timestart : '',
+timer: function () {
+  let time = 300; //기준시간 5분
+  let min = ""; //분
+  let sec = ""; //초
+  this.time_start = setInterval(() => {
+    min = parseInt(time / 60); //몫 계산
+    sec = time % 60; //나머지 계산
+    document.querySelector("#timer").innerText = min + "분" + sec + "초";
+    time--;
+    document.querySelector("#timer").style.color = "#1966c9";
+    if (time < 0) {
+      clearInterval(this.time_start); //setinterval() 실행 종료
+      document.querySelector("#timer").innerText = "시간초과";
+      document.querySelector("#timer").style.color = "#ff0000";
+      node.dataset.check = "x";  //해당 element data-check 속성 x 초기화 
+      this.hashcode = "";  // 암호코드 초기화
+    }
+  }, 1000);
+}
+``` 
