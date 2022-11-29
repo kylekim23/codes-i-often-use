@@ -8,13 +8,13 @@ public function social_login_check($type){
   if( empty($_SESSION['m_seq']) ){
     switch( $type ){
       case 'kakao' : 
-        redirect('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=c75cdefe674a2304e9fcea7bad10b96e&redirect_uri=http://120.142.20.164:8084/login/rest_kakao_login_api', 'refresh');
+        redirect('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=[client_id]&redirect_uri=http://120.142.20.164:8084/login/rest_kakao_login_api', 'refresh');
         break;
       case 'naver' : 
-        redirect('https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=BNfomfModsLL2FhvsFmj&redirect_uri=http://120.142.20.164:8084/login/rest_naver_login_api', 'refresh');         
+        redirect('https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=[client_id]&redirect_uri=http://120.142.20.164:8084/login/rest_naver_login_api', 'refresh');         
         break; 
       case 'google' : 
-        redirect('https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=384064997638-o3mm8pn6fquabgbdmsua713l0pkjmgh1.apps.googleusercontent.com&redirect_uri=http://localhost:8084/login/rest_google_login_api&scope=https://www.googleapis.com/auth/userinfo.email', 'refresh');  
+        redirect('https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=[client_id].apps.googleusercontent.com&redirect_uri=http://localhost:8084/login/rest_google_login_api&scope=https://www.googleapis.com/auth/userinfo.email', 'refresh');  
     }
   } else {
     redirect($this->agent->referrer(), 'refresh');
@@ -38,10 +38,10 @@ function rest_kakao_login_api(){
   curl_setopt($ch, CURLOPT_POST, 1);
   curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
     'grant_type' => 'authorization_code',
-    'client_id' => 'c75cdefe674a2304e9fcea7bad10b96e',
+    'client_id' => '[client_id]',
     'redirect_uri' => 'http://120.142.20.164:8084/login/rest_kakao_login_api',  //요청한곳이 동일한곳인 체크 
     'code' => $access_token,
-    'client_secret' => 'OFTDKs7tiRlfYBPLB6FP5K15Rhzo17wm'
+    'client_secret' => '[client_secret]'
   )));
 
   $value = curl_exec($ch);
@@ -96,10 +96,10 @@ function rest_naver_login_api(){  //! Naver login
   curl_setopt($ch, CURLOPT_POST, 1);
   curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
     'grant_type' => 'authorization_code',
-    'client_id' => 'BNfomfModsLL2FhvsFmj',
+    'client_id' => '[client_id]',
     'redirect_uri' => 'http://120.142.20.164:8084/login/rest_naver_login_api',  
     'code' => $access_token,
-    'client_secret' => 'XaZAHVztx3'
+    'client_secret' => '[client_secret]'
   )));
 
   $value = curl_exec($ch);
@@ -139,9 +139,9 @@ function unlink_naver(){
   curl_setopt($ch, CURLOPT_POST, 1);
   curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
     'grant_type' => 'delete',
-    'client_id' => 'BNfomfModsLL2FhvsFmj',
+    'client_id' => '[client_id]',
     'access_token' => $access_token,
-    'client_secret' => 'XaZAHVztx3',
+    'client_secret' => '[client_secret]',
     'service_provider' => 'NAVER'
   )));
   curl_exec($ch);
@@ -164,10 +164,10 @@ function rest_google_login_api(){
   curl_setopt($ch, CURLOPT_POST, 1);
   curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
     'grant_type' => 'authorization_code',
-    'client_id' => '384064997638-o3mm8pn6fquabgbdmsua713l0pkjmgh1.apps.googleusercontent.com',
+    'client_id' => '[client_id]',
     'redirect_uri' => 'http://localhost:8084/login/rest_google_login_api',   
     'code' => $access_token,
-    'client_secret' => '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'
+    'client_secret' => '[client_secret]'
   )));
 
   $value = curl_exec($ch);
