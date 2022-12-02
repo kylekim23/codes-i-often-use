@@ -118,6 +118,32 @@ function deleteCookie(name) {
   document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/'
 }
 ```
+### When use plural cookies 복수개 쿠키 사용법
+```javascript
+/**
+ * @param {HTMLInputElement} node 
+ * @expain : cookie value must be String type which means if you want to put 
+ * something more than one, you should append  
+ */ 
+function visit_trace(node){   // visit site 
+  let visit_cookie = getCookie('visit_trace');
+  if( visit_cookie != null ){
+    let visit_arr = visit_cookie.split(',');
+    if( visit_arr.length != 0 ){
+      visit_arr = visit_arr.filter((val, i) => { return val !== node.dataset.postid; });  //prevent duplicated
+      if( visit_arr.length != 0){
+        set_cookie('visit_trace', visit_arr.toString()+','+node.dataset.postid, 0.8);
+      } else {
+        set_cookie('visit_trace', node.dataset.postid, 0.8);
+      }
+    } 
+  } else {
+    set_cookie('visit_trace', node.dataset.postid, 0.8);
+  }
+  node.style.color = '#999999';
+  set_cookie('backforward', node.dataset.postid, 0.8);
+}
+```  
 ### Check if the date is valid 유효한 날짜인지 확인
 ```javascript
 /**
@@ -410,29 +436,10 @@ async function duple_check(type){
   }
 }
 ```
-### When use plural cookies 복수개 쿠키
+### 통합형 Validation Check 
 ```javascript
-/**
- * @param {HTMLInputElement} node 
- * @expain : cookie value must be String type which means if you want to put 
- * something more than one, you should append  
- */ 
-function visit_trace(node){   // visit site 
-  let visit_cookie = getCookie('visit_trace');
-  if( visit_cookie != null ){
-    let visit_arr = visit_cookie.split(',');
-    if( visit_arr.length != 0 ){
-      visit_arr = visit_arr.filter((val, i) => { return val !== node.dataset.postid; });  //prevent duplicated
-      if( visit_arr.length != 0){
-        set_cookie('visit_trace', visit_arr.toString()+','+node.dataset.postid, 0.8);
-      } else {
-        set_cookie('visit_trace', node.dataset.postid, 0.8);
-      }
-    } 
-  } else {
-    set_cookie('visit_trace', node.dataset.postid, 0.8);
-  }
-  node.style.color = '#999999';
-  set_cookie('backforward', node.dataset.postid, 0.8);
+function validation_control(input_name){
+  const 
 }
-```  
+ 
+```
