@@ -271,4 +271,77 @@ timer: function () {
   }, 1000);
 }
 ```
-
+###  Increase input efficiency 잦은 비동기 입력 효율 높이기
+> 특정 Input 태그에 입력할 시 비동기 호출이 이뤄져야한다면 
+타자를 치고있는 동안에는 호출을 보내지않고 타자를 멈췄을때 
+호출을 보내는게 효율적이다 그것을 onkeydown과 onkeyup Event를 이용해 
+작성해보자. 
+```javascript
+const test = {
+  flag : true,  //test 지역변수 
+  /**
+   * ! key down
+   * @param {HTMLInputElement} node 
+   */
+  on_key_down : (node) => {
+    this.flag = false;
+  },
+  /**
+   * ! key up
+   * @param {HTMLInputElement} node 
+   */
+  on_key_up : async (node) => {
+    this.flag = true;
+    await setTimeout( () => {
+      if( this.flag ) {
+        const regExp = new RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
+        if( regExp.test(node.value.trim()) ){
+          const data = new FormData();
+          data.append('email', node.value);
+          fetch("/auth/check_email", {
+            method: "POST",
+            mode: "cors",
+            body: data,
+            headers: {
+              Accept: "application/json",
+            },
+          })
+          .then( (res) => {
+            return res.json();
+          })
+          .then( (json) => {
+            console.log(json);
+          })
+          .catch( (error) => {
+            console.log(error);
+          })
+        }  
+        this.flag = false;
+      }
+    }, 1000);
+  },
+}
+```  
+### 최신 API INTL (Internationalization API) 국가별 세팅 
+```javascript
+/**
+ * @explain : transformat the number by each country method    
+ */
+const number = 123456789;
+const options = {
+    notation : "compact"
+}
+console.log(new Intl.NumberFormat('ko-KR', options).format(number));
+console.log(new Intl.NumberFormat('en-US', options).format(number));
+//result1 : 1.2억 
+//result2 : 123M
+/**
+ * @explain : appears each country timezone with their language   
+ */
+const options = {
+    dateStyle : "medium",
+    timeStyle : "full",
+}
+console.log(new Intl.DateTimeFormat('ko-KR', options).format(new Date));
+// result : 2022. 12. 2. 오전 9시 32분 16초 한국 표준시
+```
