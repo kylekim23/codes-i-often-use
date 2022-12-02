@@ -346,7 +346,7 @@ const options = {
 console.log(new Intl.DateTimeFormat('ko-KR', options).format(new Date));
 // result : 2022. 12. 2. 오전 9시 32분 16초 한국 표준시
 ```
-### 2개이상 input 중복체크 
+### check more than one inputs duplicated   
 ```javascript
 /**
  * @param {String} type -> email or name
@@ -410,3 +410,29 @@ async function duple_check(type){
   }
 }
 ```
+### When use plural cookies 복수개 쿠키
+```javascript
+/**
+ * @param {HTMLInputElement} node 
+ * @expain : cookie value must be String type which means if you want to put 
+ * something more than one, you should append  
+ */ 
+function visit_trace(node){   // visit site 
+  let visit_cookie = getCookie('visit_trace');
+  if( visit_cookie != null ){
+    let visit_arr = visit_cookie.split(',');
+    if( visit_arr.length != 0 ){
+      visit_arr = visit_arr.filter((val, i) => { return val !== node.dataset.postid; });  //prevent duplicated
+      if( visit_arr.length != 0){
+        set_cookie('visit_trace', visit_arr.toString()+','+node.dataset.postid, 0.8);
+      } else {
+        set_cookie('visit_trace', node.dataset.postid, 0.8);
+      }
+    } 
+  } else {
+    set_cookie('visit_trace', node.dataset.postid, 0.8);
+  }
+  node.style.color = '#999999';
+  set_cookie('backforward', node.dataset.postid, 0.8);
+}
+```  
