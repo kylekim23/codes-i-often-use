@@ -335,6 +335,7 @@ console.log(new Intl.NumberFormat('ko-KR', options).format(number));
 console.log(new Intl.NumberFormat('en-US', options).format(number));
 //result1 : 1.2억 
 //result2 : 123M
+
 /**
  * @explain : appears each country timezone with their language   
  */
@@ -344,4 +345,68 @@ const options = {
 }
 console.log(new Intl.DateTimeFormat('ko-KR', options).format(new Date));
 // result : 2022. 12. 2. 오전 9시 32분 16초 한국 표준시
+```
+### 2개이상 input 중복체크 
+```javascript
+/**
+ * @param {String} type -> email or name
+ * @explain is email or name duplicated?  
+ */
+async function duple_check(type){
+  let selector = document.querySelector(`input[name="${type}"]`); 
+  let flag = false;
+  let value = selector.value.trim();
+  let regExp = '';
+  switch( type ){
+    case 'email':
+      regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      flag = regExp.test(selector.value.trim()) ? true : false;
+      break;
+    case 'name':
+      regExp = /^.{2,8}$/;
+      flag = regExp.test(selector.value.trim()) ? true : false;
+      break;
+  }
+  if( flag ){
+    const data = new FormData();
+    data.append('type', type);
+    data.append('value', value);
+    await fetch('url', {
+      method: "POST",
+      mode: "cors",
+      body: data,
+      headers: {
+        Accept: "application/json",
+      },
+    })
+    .then((res) => {
+      return res.json();
+    })
+    .then((json) => {
+      switch(json.flag){
+        case 'o':
+          if( json.result !== 'duplicated' ){
+            selector.dataset.duple_check = 'o';
+            alert('사용 가능합니다.');
+          } else {
+            selector.dataset.duple_check = 'x';
+            alert('이미 사용중입니다.');
+          }
+          break;
+        case 'no_permission':
+          selector.dataset.duple_check = 'x';
+          alert('권한이 없습니다.');
+          break;
+      }
+    })
+    .catch((e) => {
+      alert('개발자에게 문의주세요. \n [abcd@gmail.com]');
+      console.log(e);
+    });
+  } else {
+    selector.dataset.duple_check = 'x';
+    type = type === 'email' ? '이메일' : '이름';
+    alert(`${type} 형식에 맞게 작성해주세요.`);
+  }
+}
 ```
