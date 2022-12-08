@@ -432,7 +432,7 @@ async function duple_check(type){
   } else {
     selector.dataset.duple_check = 'x';
     type = type === 'email' ? '이메일' : '이름';
-    alert(`${type} 형식에 맞게 작성해주세요.`);
+    alert(`${type} 형식에 맞게 작성해주세요.`); 
   }
 }
 ```
@@ -441,5 +441,5 @@ async function duple_check(type){
 function validation_control(input_name){
   const 
 }
- 
+
 ```
